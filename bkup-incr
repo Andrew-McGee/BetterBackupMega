@@ -1,0 +1,42 @@
+#!/bin/bash
+now=$(date +"%Y-%m-%d:%H:%M")
+dest="/backups" # Your backup folder on Mega
+
+if [ $# -eq 0 ]; then
+	echo "No argument supplied. Need to specify base dir."
+	exit 1
+fi
+
+echo "+++++++++++++++++++++++"
+echo "Running INCR backup from base dir $1"
+echo "with date: $now"
+echo "+++++++++++++++++++++++"
+
+cd $1
+
+if [ -f "filelist-now" ]; then
+	cp filelist-now filelist-last
+else
+	echo "filelist-now not found in the base directory $1" 
+	echo "You need to run a full back up first." 
+	exit 1
+fi
+
+echo "Collecting current file information and running diff."
+echo "+++++++++++++++++++++++"
+
+find $1 -type f -printf "%TY-%Tm-%Td %TH:%TM %p\n" >filelist-now
+
+diff --unchanged-group-format="" --changed-group-format="%>" --new-group-format="%>" filelist-last filelist-now >filelist-incr
+
+echo "Incremental file list saved to filelist-incr"
+echo "+++++++++++++++++++++++"
+
+while IFS= read -r line; do
+	echo "Now backing up: ${line:17}"
+	mega-put -q -c ${line:17} $dest/bkup-incr-$now${line:17}
+done < filelist-incr
+
+echo "+++++++ Transfers now in progress ++++++++"
+mega-transfers
+echo "++++++++++++++++++++++++++++++++++++++++++"

@@ -1,0 +1,26 @@
+#!/bin/bash
+now=$(date +"%Y-%m-%d:%H:%M")
+dest="/backups" # Your backup folder on Mega
+
+if [ $# -eq 0 ]; then
+	echo "No argument supplied. Need to specify base dir."
+	exit 1
+fi
+
+echo "+++++++++++++++++++++++"
+echo "Running FULL backup from base dir $1"
+echo "with date: $now"
+echo "+++++++++++++++++++++++"
+
+cd $1
+
+find $1 -type f -printf "%TY-%Tm-%Td %TH:%TM %p\n" >filelist-full
+
+while IFS= read -r line; do
+	echo "Now backing up: ${line:17}"
+	mega-put -q -c ${line:17} $dest/bkup-full-$now${line:17}
+done < filelist-full
+
+echo "+++++++ Transfers now in progress ++++++++"
+mega-transfers
+echo "++++++++++++++++++++++++++++++++++++++++++"
