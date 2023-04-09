@@ -8,7 +8,7 @@ if [ $# -eq 0 ]; then
 fi
 
 echo "+++++++++++++++++++++++"
-echo "Running FULL backup from base dir $1"
+echo "Dummy test FULL backup from base dir $1"
 echo "with date: $now"
 echo "+++++++++++++++++++++++"
 
@@ -18,7 +18,7 @@ find $1 -type f -printf "%TY-%Tm-%Td %TH:%TM %p\n" >filelist-now
 
 while IFS= read -r line; do
 	echo "Now backing up: ${line:17}"
-	mega-put -q -c "${line:17}" "$dest/bkup-full-$now${line:17}"
+	#mega-put -q -c ${line:17} $dest/bkup-full-$now${line:17}
 done < filelist-now
 
 echo "+++++++ Transfers now in progress ++++++++"

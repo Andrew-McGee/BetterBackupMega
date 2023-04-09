@@ -1,5 +1,5 @@
 #!/bin/bash
-now=$(date +"%Y-%m-%d:%H:%M")
+now=$(date +"%Y-%m-%d-%H.%M")
 dest="/backups" # Your backup folder on Mega
 
 if [ $# -eq 0 ]; then
@@ -17,8 +17,8 @@ cd $1
 if [ -f "filelist-now" ]; then
 	cp filelist-now filelist-last
 else
-	echo "filelist-now not found in the base directory $1" 
-	echo "You need to run a full back up first." 
+	echo "filelist-now not found in the base directory $1"
+	echo "You need to run a full back up first."
 	exit 1
 fi
 
@@ -34,7 +34,7 @@ echo "+++++++++++++++++++++++"
 
 while IFS= read -r line; do
 	echo "Now backing up: ${line:17}"
-	mega-put -q -c ${line:17} $dest/bkup-incr-$now${line:17}
+	mega-put -q -c "${line:17}" "$dest/bkup-incr-$now${line:17}"
 done < filelist-incr
 
 echo "+++++++ Transfers now in progress ++++++++"
