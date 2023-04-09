@@ -5,7 +5,7 @@ BetterBackupMega is a BASH shell script to enhance functionality of MEGA utiliti
 Note: This is not file sync to or from MEGA. This is sending and storing regular file backups to MEGA cloud storage.
 
 Important prerequisites:
-- You need to have MEGAcmd installed and in your path.
+- You need to have MEGAcmd installed and in your path. https://github.com/meganz/MEGAcmd
 - Run mega-cmd at least once to create login token.
 - Tested on linux (Fedora 37) bash shell. Should work on other bash shells with the following utils:
 - find command to build file list
@@ -30,7 +30,7 @@ Incremental backups will be saved in a subdirectory with the prefix bkup-incr an
 
 You must pass the root backup directory (without trailing slash) as an argument to both bkup-full and bkup-incr. Example:
 
-./bkup-full /home/username/docs
+``./bkup-full /home/username/docs``
 
 Will backup all regular files and subdirectories recursively from /home/username/docs.
 
