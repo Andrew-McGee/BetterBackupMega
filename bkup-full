@@ -14,12 +14,12 @@ echo "+++++++++++++++++++++++"
 
 cd $1
 
-find $1 -type f -printf "%TY-%Tm-%Td %TH:%TM %p\n" >filelist-full
+find $1 -type f -printf "%TY-%Tm-%Td %TH:%TM %p\n" >filelist-now
 
 while IFS= read -r line; do
 	echo "Now backing up: ${line:17}"
 	mega-put -q -c ${line:17} $dest/bkup-full-$now${line:17}
-done < filelist-full
+done < filelist-now
 
 echo "+++++++ Transfers now in progress ++++++++"
 mega-transfers
