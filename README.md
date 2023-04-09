@@ -10,11 +10,11 @@ Important prerequisites:
 - Tested on linux (Fedora 37) bash shell. Should work on other bash shells with the following utils:
 - find command to build file list
 - diff to compare file lists and build incremental back up list (new files and modified files)
-- You need permissions to the backup directories and files - will create file list files in the root directory being backed up
+- You need permissions to the backup directories and files - needs to create files in the root directory being backed up
 
 ## What it does today
 
-Two executable scripts, **bkup-full** and **bkup-incr** run either a full backup or incremental backup respectively. You must run a full backup at least once before running and incremental, as this creates a file listing of your root backup directory and all sub directories. This plain text file is called 'filelist-now' and is saved in the root of the directory you are backing up (hence you need to run the script with write permissions). For a full backup it uses the find command to recursively list every file and directory with the full pathname and last modified date.
+Two executable scripts, **bkup-full** and **bkup-incr** run either a full backup or incremental backup respectively. You must run a full backup at least once before running an incremental, as this creates a file listing of your root backup directory and all sub directories. This plain text file is called 'filelist-now' and is saved in the root of the directory you are backing up (hence you need to run the script with write permissions). For a full backup it uses the find command to recursively list every file and directory with the full pathname and last modified date.
 
 After creating the file list the full backup will run the mega-put command for each file. Note that mega-put queues all these transfers as jobs, so the backup script may end but the transfers could still be queued and running. The last thing the script does after completing the mega-puts is to execute the mega-transfers command to give you an indication if jobs are still queued. Note by default it shows you 10 items. Use the mega-transfers command again to continue to monitor the queue.
 
